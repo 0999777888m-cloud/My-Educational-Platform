@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصتي الدراسية الذكية</title>
+    <!-- خط العرض المريح للقراءة -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --accent: #10b981;
+            --danger: #ef4444;
+            --border: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .card h2 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+        }
+
+        /* Pomodoro Section */
+        .pomodoro-display {
+            font-size: 3.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin: 1.5rem 0;
+            color: var(--accent);
+            letter-spacing: 2px;
+        }
+
+        .pomodoro-controls {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button.secondary {
+            background-color: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        button.secondary:hover {
+            background-color: var(--border);
+            color: var(--text-color);
+        }
+
+        button.danger {
+            background-color: var(--danger);
+        }
+
+        /* To-Do List Section */
+        .task-input-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.6rem 1rem;
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        ul.task-list {
+            list-style: none;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        li.task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--bg-color);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            border: 1px solid var(--border);
+            transition: opacity 0.2s;
+        }
+
+        li.task-item.completed span {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 0.4rem;
+        }
+
+        .task-actions button {
+            padding: 0.3rem 0.6rem;
+            font-size: 0.85rem;
+        }
+
+        /* Quick Links */
+        .links-grid {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .link-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .link-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary);
+        }
+
+        .link-card span {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>مُساعد الدراسة الذكي</h1>
+        <p>نظم وقتك، أنجز مهامك، وتتبع تقدمك الأكاديمي بكل سهولة</p>
+    </header>
+
+    <div class="container">
+        <!-- قسم عداد بومودورو -->
+        <div class="card">
+            <h2>⏱️ مؤقت التركيز (Pomodoro)</h2>
+            <div class="pomodoro-display" id="timer">25:00</div>
+            <div class="pomodoro-controls">
+                <button id="start-btn" onclick="startTimer()">ابدأ</button>
+                <button class="secondary" id="pause-btn" onclick="pauseTimer()">إيقاف مؤقت</button>
+                <button class="danger" onclick="resetTimer()">إعادة ضبط</button>
+            </div>
+        </div>
+
+        <!-- قسم قائمة المهام -->
+        <div class="card">
+            <h2>📝 مهام اليوم الدراسية</h2>
+            <div class="task-input-group">
+                <input type="text" id="task-input" placeholder="أضف مهمة جديدة (مثلاً: مراجعة الفصل الأول)...">
+                <button onclick="addTask()">إضافة</button>
+            </div>
+            <ul class="task-list" id="task-list">
+                <!-- المهام تضاف هنا ديناميكياً -->
+            </ul>
+        </div>
+
+        <!-- قسم الروابط السريعة -->
+        <div class="links-grid">
+            <a href="https://scholar.google.com" target="_blank" class="link-card">
+                <strong>Google Scholar</strong>
+                <span>البحث عن أبحاث ومراجع علمية</span>
+            </a>
+            <a href="https://github.com" target="_blank" class="link-card">
+                <strong>GitHub</strong>
+                <span>مستودعات الأكواد والمشاريع</span>
+            </a>
+            <a href="https://chatgpt.com" target="_blank" class="link-card">
+                <strong>ChatGPT</strong>
+                <span>مساعد ذكي لشرح المفاهيم</span>
+            </a>
+            <a href="https://www.coursera.org" target="_blank" class="link-card">
+                <strong>Coursera</strong>
+                <span>منصة الدورات والشهادات</span>
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        <p> بالتوفيق في مسيرتك الأكاديمية! 🚀</p>
+    </footer>
+
+    <script>
+        // --- 1. منطق عداد البومودورو ---
+        let timeLeft = 25 * 60;
+        let timerId = null;
+        let isRunning = false;
+
+        const timerDisplay = document.getElementById('timer');
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            if (isRunning) return;
+            isRunning = true;
+            timerId = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    updateTimerDisplay();
+                } else {
+                    clearInterval(timerId);
+                    isRunning = false;
+                    alert('انتهت جلسة التركيز! خذ استراحة قصيرة.');
+                    resetTimer();
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            clearInterval(timerId);
+            isRunning = false;
+        }
+
+        function resetTimer() {
+            clearInterval(timerId);
+            isRunning = false;
+            timeLeft = 25 * 60;
+            updateTimerDisplay();
+        }
+
+        // --- 2. منطق قائمة المهام (To-Do List) ---
+        const taskInput = document.getElementById('task-input');
+        const taskList = document.getElementById('task-list');
+
+        // تحميل المهام المحفوظة عند فتح الصفحة
+        document.addEventListener('DOMContentLoaded', loadTasks);
+
+        function addTask() {
+            const text = taskInput.value.trim();
+            if (!text) return;
+
+            const task = {
+                id: Date.now(),
+                text: text,
+                completed: false
+            };
+
+            saveTaskToStorage(task);
+            renderTask(task);
+            taskInput.value = '';
+        }
+
+        function renderTask(task) {
+            const li = document.createElement('li');
+            li.className = `task-item ${task.completed ? 'completed' : ''}`;
+            li.setAttribute('data-id', task.id);
+
+            li.innerHTML = `
+                <span>${task.text}</span>
+                <div class="task-actions">
+                    <button onclick="toggleTask(${task.id})">${task.completed ? 'إلغاء' : 'إنجاز'}</button>
+                    <button class="danger" onclick="deleteTask(${task.id})">حذف</button>
+                </div>
+            `;
+            taskList.appendChild(li);
+        }
+
+        function getTasksFromStorage() {
+            return JSON.parse(localStorage.getItem('study_tasks')) || [];
+        }
+
+        function saveTaskToStorage(task) {
+            const tasks = getTasksFromStorage();
+            tasks.push(task);
+            localStorage.setItem('study_tasks', JSON.stringify(tasks));
+        }
+
+        function loadTasks() {
+            taskList.innerHTML = '';
+            const tasks = getTasksFromStorage();
+            tasks.forEach(renderTask);
+        }
+
+        function toggleTask(id) {
+            let tasks = getTasksFromStorage();
+            tasks = tasks.map(task => {
+                if (task.id === id) {
+                    task.completed = !task.completed;
+                }
+                return task;
+            });
+            localStorage.setItem('study_tasks', JSON.stringify(tasks));
+            loadTasks();
+        }
+
+        function deleteTask(id) {
+            let tasks = getTasksFromStorage();
+            tasks = tasks.filter(task => task.id !== id);
+            localStorage.setItem('study_tasks', JSON.stringify(tasks));
+            loadTasks();
+        }
+
+        // السماح بالإضافة عبر زر Enter
+        taskInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addTask();
+            }
+        });
+    </script>
+</body>
+</html>
